@@ -287,6 +287,12 @@ function home(){
     h('h2',null,'Leaders: combine sheets'),
     h('p',{class:'hint'},'Download the score files from the Drive folder, pick them all here, and get one group tally (one row per child, with profiles).'),
     (()=>{ const inp=h('input',{type:'file',accept:'.csv,text/csv',multiple:true}); inp.addEventListener('change',()=>combine(inp.files)); return inp; })(),
+    h('details',{style:'margin-top:10px'}, h('summary',{class:'hint',style:'cursor:pointer'},'Got results pasted on WhatsApp instead? Turn them into a file'),
+      (()=>{ const ta=h('textarea',{placeholder:'Paste one volunteer’s copied results here'}); const b=h('button',{class:'btn small',type:'button',onclick:async()=>{
+          const t=ta.value.trim(); if(!t.startsWith('center,code')){ toast('That does not look like copied results'); return; }
+          const code=(parseCSV(t)[1]||[])[1]||'sheet', rnd=(parseCSV(t)[1]||[])[2]||'';
+          const r=await saveFile(code+'_round'+rnd+'_'+today()+'.csv','\ufeff'+t); toast(r==='cancelled'?'Not saved':'File made: put it in the Drive folder'); }},'Make the file');
+        return h('div',null, ta, h('div',{class:'tools'},b)); })()),
     h('div',{id:'tallyOut'}),
     h('details',{style:'margin-top:12px'}, h('summary',{class:'hint',style:'cursor:pointer'},'Delete sheets from this phone'),
       h('p',{class:'hint'},'Only after the file is safely in Drive.'),
@@ -338,7 +344,7 @@ function segOf(s, key, opts, after){
 
 function headerCard(s,c){
   const numSel = h('select',null, h('option',{value:''},'Pick number'), ...Array.from({length:c.n},(_,i)=>h('option',{value:pad(i+1),selected:s.num===pad(i+1)}, s.center+'-'+pad(i+1))));
-  numSel.addEventListener('change',()=>{ s.num=numSel.value; touch(); $('#hsub').textContent=codeOf(s)+' · Round '+s.round; });
+  numSel.addEventListener('change',()=>{ s.num=numSel.value; touch(); $('#hsub').textContent=codeOf(s)+' · Round '+s.round; refreshP6(); });
   const tbtn=(key)=>{ const i=h('input',{type:'time',value:s[key]||''}); i.addEventListener('change',()=>{s[key]=i.value;touch();}); const b=h('button',{class:'btn small ghost',type:'button',onclick:()=>{ s[key]=nowTime(); i.value=s[key]; touch(); }},'Now'); return h('div',{class:'trow'}, i, b); };
   const date=h('input',{type:'date',value:s.date||''}); date.addEventListener('change',()=>{s.date=date.value;touch();});
   return h('div',{class:'card',id:'sec-top'},
@@ -624,16 +630,25 @@ async function finish(){
     panel.append(h('h2',null,'All parts are filled'), h('p',{class:'hint'},'Next: choose Google Drive in the share menu and save into the assessment folder. If Drive does not appear, the file downloads; upload it to the folder from the Drive app.'),
       h('div',{class:'tools'}, h('button',{class:'btn',type:'button',onclick:()=>doSave(s)},'Save file to Drive')));
   }
+  panel.append(h('p',{class:'hint',style:'margin-top:14px'},'File not saving on this phone? Copy the results and paste them into WhatsApp to your leader.'),
+    h('div',{class:'tools'}, h('button',{class:'btn ghost',type:'button',onclick:(e)=>copyResults(s,e.currentTarget)},'Copy results')));
   app.append(panel);
   panel.scrollIntoView({behavior:'smooth'});
+}
+async function copyResults(s, btn){
+  const text = buildCSV(s).replace(/^\ufeff/,'');
+  try{ await navigator.clipboard.writeText(text); s.submitted=true; mem[s.id]=s; persist(); toast('Copied. Paste it into WhatsApp to your leader.',4000); return; }catch(e){}
+  const ta=h('textarea',{readonly:true,style:'margin-top:8px;min-height:160px;font-size:12px'}); ta.value=text;
+  btn.after(ta); ta.focus(); ta.select();
+  toast('Select all the text in the box, copy it, and paste it into WhatsApp.',5000);
 }
 async function doSave(s){
   const name = codeOf(s)+'_round'+s.round+'_'+(s.date||today())+'.csv';
   const r = await saveFile(name, buildCSV(s));
   if(r==='shared'||r==='saved'){ s.submitted=true; s.updated=Date.now(); mem[s.id]=s; persist(); toast(r==='shared'?'Sent. Check it landed in the Drive folder.':'File saved: upload it to the Drive folder.',3500); }
   if((r==='shared'||r==='saved') && DRIVE_FOLDER_URL){ const fb=$('#finishBox'); if(fb && !fb.querySelector('.drive')) fb.append(h('div',{class:'tools drive'}, h('a',{class:'btn ghost',href:DRIVE_FOLDER_URL,target:'_blank',rel:'noopener',style:'text-decoration:none;text-align:center'},'Open the Drive folder'))); }
-  else if(r==='cancelled') toast('Not saved. Tap again when ready.');
-  else toast('Could not save here. Tell a leader.');
+  if(r==='cancelled') toast('Not saved. Tap again when ready.');
+  else if(r==='failed') toast('This browser could not make the file. Use “Copy results” below and send them on WhatsApp.',5000);
 }
 
 // ---------------- leaders: combine ----------------
