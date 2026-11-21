@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>U&amp;i Score Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Noto+Sans+Kannada:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F2FB; --card:#FFFFFF; --ink:#1E1838; --soft:#5C5478; --line:#DCD1EE;
+  --brand:#5B2A9B; --brand-ink:#FFFFFF; --gold:#F2B632;
+  --ok:#1F7A4D; --ok-bg:#E3F4EA; --bad:#B3261E; --bad-bg:#FBE6E4;
+  --na:#6B6B7B; --na-bg:#ECECF1; --q:#8A5A00; --q-bg:#FFF2D2; --chip:#F0E8FA;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15111F; --card:#211B31; --ink:#F2EDFA; --soft:#B9AED3; --line:#3A3152;
+    --brand:#A97DE8; --brand-ink:#15111F; --gold:#F2B632;
+    --ok:#6FD3A0; --ok-bg:#183A2A; --bad:#FF8A80; --bad-bg:#3D1E1D;
+    --na:#B4B4C4; --na-bg:#2C2A36; --q:#F2C66B; --q-bg:#3A2F14; --chip:#2E2542;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15111F; --card:#211B31; --ink:#F2EDFA; --soft:#B9AED3; --line:#3A3152;
+  --brand:#A97DE8; --brand-ink:#15111F; --gold:#F2B632;
+  --ok:#6FD3A0; --ok-bg:#183A2A; --bad:#FF8A80; --bad-bg:#3D1E1D;
+  --na:#B4B4C4; --na-bg:#2C2A36; --q:#F2C66B; --q-bg:#3A2F14; --chip:#2E2542;
+}
+*{box-sizing:border-box}
+html,body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:'Nunito Sans',system-ui,-apple-system,sans-serif;font-size:16px;-webkit-text-size-adjust:100%}
+.kn{font-family:'Noto Sans Kannada','Nunito Sans',sans-serif}
+header.top{position:sticky;top:0;z-index:20;background:var(--brand);color:var(--brand-ink);padding:10px 16px;display:flex;align-items:center;gap:10px;justify-content:space-between}
+header.top h1{font-size:17px;margin:0;font-weight:800;letter-spacing:.2px}
+header.top .sub{font-size:12px;opacity:.85}
+header.top button{background:transparent;border:1.5px solid currentColor;color:inherit;border-radius:10px;padding:6px 10px;font:inherit;font-size:13px;font-weight:700}
+main{max-width:760px;margin:0 auto;padding:14px 16px 120px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:0 0 14px}
+h2{font-size:17px;margin:0 0 4px;font-weight:800}
+.hint{font-size:13px;color:var(--soft);margin:2px 0 10px;line-height:1.4}
+label.f{display:block;font-size:13px;font-weight:700;color:var(--soft);margin:10px 0 4px}
+input[type=text],input[type=date],input[type=time],input[type=number],select,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px}
+textarea{min-height:70px;resize:vertical}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+input,select,textarea{min-width:0}
+.trow{display:flex;gap:6px}.trow input{flex:1}.trow .btn{flex:none}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button,.pill{font:inherit;font-size:14px;font-weight:700;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:8px 14px;min-height:40px}
+.seg button.on,.pill.on{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.btn{font:inherit;font-weight:800;font-size:15px;border:0;border-radius:12px;padding:12px 16px;background:var(--brand);color:var(--brand-ink);min-height:46px}
+.btn.ghost{background:transparent;color:var(--brand);border:1.5px solid var(--brand)}
+.btn.small{font-size:13px;padding:8px 12px;min-height:36px}
+.btn.danger{background:transparent;color:var(--bad);border:1.5px solid var(--bad)}
+.parthead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.score{font-weight:800;font-size:15px;background:var(--chip);border-radius:10px;padding:6px 10px;white-space:nowrap}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:8px}
+.items.wide{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.it{border:1.5px solid var(--line);border-radius:12px;padding:8px;background:var(--bg)}
+.it.c{border-color:var(--ok);background:var(--ok-bg)}
+.it.x{border-color:var(--bad);background:var(--bad-bg)}
+.it.n{border-color:var(--na);background:var(--na-bg)}
+.it.q{border-color:var(--q);background:var(--q-bg)}
+.it .lab{font-weight:800;font-size:18px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.it .lab small{font-weight:600;font-size:12px;color:var(--soft)}
+.it .lab .kn{font-size:22px}
+.mk{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.mk button{font:inherit;font-size:17px;font-weight:800;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:9px;min-height:40px;padding:0}
+.mk button.on.c{background:var(--ok);border-color:var(--ok);color:var(--card)}
+.mk button.on.x{background:var(--bad);border-color:var(--bad);color:var(--card)}
+.mk button.on.n{background:var(--na);border-color:var(--na);color:var(--card)}
+.mk button.on.q{background:var(--q);border-color:var(--q);color:var(--card)}
+.codes{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.codes button{font:inherit;font-size:13px;font-weight:800;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;min-width:34px;min-height:32px}
+.codes button.on{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.it input.note{margin-top:6px;font-size:14px;padding:7px 9px}
+.legend{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-size:13px}
+.legend div{display:flex;gap:6px;align-items:center}
+.sw{display:inline-flex;width:26px;height:26px;border-radius:7px;align-items:center;justify-content:center;font-weight:800;color:var(--card)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.flag{font-size:12px;font-weight:800;border-radius:6px;padding:3px 7px;background:var(--chip);color:var(--soft)}
+.flag.on{background:var(--gold);color:#1E1838}
+.cands{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:8px}
+.cand{font:inherit;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:8px 6px;text-align:center;min-height:64px}
+.cand b{display:block;font-size:20px}
+.cand span{font-size:11px;font-weight:700;color:var(--soft)}
+.cand.known{border-color:var(--ok);background:var(--ok-bg)}
+.cand.missed{border-color:var(--bad);background:var(--bad-bg)}
+.cand.skip{border-color:var(--na);background:var(--na-bg);opacity:.85}
+.cand.auto{border-style:dashed}
+table.pr{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+table.pr th{text-align:left;font-size:12px;color:var(--soft);padding:6px 4px;border-bottom:1.5px solid var(--line)}
+table.pr td{padding:8px 4px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.pr .tg{white-space:nowrap;font-weight:800;border-radius:6px;padding:2px 7px;font-size:12px}
+.tg.A{background:var(--gold);color:#1E1838}.tg.D{background:var(--brand);color:var(--brand-ink)}
+.yn{display:flex;gap:4px}
+.yn button{font:inherit;font-weight:800;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;min-width:38px;min-height:36px}
+.yn button.on.c{background:var(--ok);color:var(--card);border-color:var(--ok)}
+.yn button.on.x{background:var(--bad);color:var(--card);border-color:var(--bad)}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.checks label{display:flex;gap:8px;align-items:center;font-size:14px;background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:8px}
+.checks input{width:20px;height:20px;accent-color:var(--brand)}
+.list .s{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.list .s:last-child{border-bottom:0}
+.list .s b{font-size:16px}
+.status{font-size:12px;font-weight:800;border-radius:6px;padding:3px 8px}
+.status.draft{background:var(--q-bg);color:var(--q)}
+.status.done{background:var(--ok-bg);color:var(--ok)}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:center;z-index:30}
+.bar .btn{flex:1;max-width:360px}
+.toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);background:var(--ink);color:var(--card);padding:10px 16px;border-radius:12px;font-weight:700;font-size:14px;z-index:40;max-width:90vw;text-align:center}
+.warn{background:var(--q-bg);color:var(--q);border-radius:10px;padding:10px;font-size:14px;font-weight:600;margin-top:8px}
+.err{background:var(--bad-bg);color:var(--bad);border-radius:10px;padding:10px;font-size:14px;font-weight:600;margin-top:8px}
+.nav{display:flex;gap:6px;overflow-x:auto;padding:8px 16px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:52px;z-index:15}
+.nav a{font-size:13px;font-weight:800;color:var(--brand);text-decoration:none;border:1.5px solid var(--line);border-radius:999px;padding:5px 10px;white-space:nowrap}
+.tally{overflow-x:auto}
+.tally table{border-collapse:collapse;font-size:13px;min-width:900px}
+.tally th,.tally td{border:1px solid var(--line);padding:5px 6px;text-align:center}
+.tally th{background:var(--chip)}
+.hidden{display:none!important}
+@media (max-width:380px){.items{grid-template-columns:1fr 1fr}.it .lab{font-size:16px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div><h1>U&amp;i Score Sheet</h1><div class="sub" id="hsub">Reading assessment</div></div>
+  <button id="homeBtn" class="hidden" type="button">All sheets</button>
+</header>
+<nav class="nav hidden" id="nav"></nav>
+<main id="app"></main>
+<div class="bar hidden" id="bar">
+  <button class="btn ghost" id="saveDraft" type="button">Save changes</button>
+  <button class="btn" id="finish" type="button">Finish &amp; save to Drive</button>
+</div>
+<div class="toast hidden" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+// ---------------- fixed content (same as the paper scoring sheet) ----------------
+// Paste your shared Google Drive folder link between the quotes (optional):
+const DRIVE_FOLDER_URL = '';
+const CENTERS = {SC:{name:'SCH',n:21}, PB:{name:'Project Bhuvi',n:11}, NB:{name:'Nabhya',n:29}};
+const AKSHARA = ["ಸ","ಮ","ಟ","ಪ","ನ","ಬ","ಡ","ಕ","ಗ","ಲ","ಹ","ರ","ಜ","ವ","ಫ","ಯ","ಝ","ಶ","ಚ","ಥ","ಅ","ಎ","ಇ","ಒ","ಉ"];
+const BRIDGE_KW = {b:'bat',m:'map',s:'sun',t:'top',p:'pen',n:'net',d:'dog',l:'leg'};
+const POOL = ['f','z','j','y','v','w','h','g','r','k','sh','ch','th'];
+const ANCHOR = {f:'ಫ',z:'ಝ',j:'ಜ',y:'ಯ',v:'ವ',w:'ವ',h:'ಹ',g:'ಗ',r:'ರ',k:'ಕ',sh:'ಶ',ch:'ಚ',th:'ಥ'};
+const KEYWORD = {f:'fan',z:'zip',j:'jug',y:'yes',v:'van',w:'web',h:'hat',g:'goat',r:'run',k:'kite',sh:'ship',ch:'chin',th:'thin'};
+const PARTS = [
+  {id:'p1', t:'1. Akshara check', items:AKSHARA, kn:true, codes:[], stop:5, note:false,
+   hint:'Child reads each Kannada letter. Correct = the sound or name of the letter (ಸ as “sa”). Stop after 5 misses in a row.'},
+  {id:'p2a', t:'2a. English sounds, no hint', items:['b','m','s','t','p','n','d','l','k','h'], codes:['V','S','L','N'], vtick:true, note:true, first8:true,
+   hint:'Ask all 10. A sound with a vowel (“buh”) is correct: tick and add V. Letter name: ✗ and L. Wrong sound: ✗, S and write what was said.'},
+  {id:'p2b', t:'2b. Kannada bridge', items:['b','m','s','t','p','n','d','l'], labels:k=>k+' for '+BRIDGE_KW[k], codes:['N'], vtick:true, note:true, stop:5,
+   hint:'Practice first: o for ox (not scored). Correct if the child says the Kannada sound (ba, ಬ or b). Write what the child said. Stop after 5 misses in a row.'},
+  {id:'p3a', t:'3a. Oral blending', items:['map: m-a-p','sun: s-u-n','hot: h-o-t','bed: b-e-d','pig: p-i-g','cat: k-a-t','jug: j-u-g','red: r-e-d'], wide:true, codes:['N'], note:true, stop:4,
+   hint:'Say the sounds one per second. Correct = the right word. Write a wrong word in the note. Stop after 4 misses in a row.'},
+  {id:'p3b', t:'3b. Oral splitting', items:['cat','pet','bit','rat','hat','sun','dog','pin'], codes:['L','N'], note:true,
+   hint:'Correct only if every sound is right and in order. Write what the child said if wrong.'},
+  {id:'p4a', t:'4a. Words', items:['sat','pin','hop','bed','sun','map','dig','hot','red','cup'], codes:['B','G','V','S','N'], note:true, stop:5,
+   hint:'Sounding out then saying the word is correct. B = sounds but no blend, G = guessed another word. Stop after 5 misses in a row.'},
+  {id:'p4b', t:'4b. Made-up words', items:['hig','nal','kug','bis','gok','dep','fam','kun','ged','wib'], codes:['B','G','V','S','N'], note:true, stop:5, skippable:true,
+   hint:'Skip this part if 2a was under 3 of 10. Always write the wrong sound the child gave.'},
+  {id:'p5a', t:'5a. Spelling (from the writing sheet)', items:['in','on','up','cap','ten','win','lap','bun','dog','pet'], codes:[], note:true, after:true,
+   hint:'Mark after the hour from the child’s paper writing sheet. Every letter right and in order = correct. Reversed letter = wrong: write what was written.'},
+  {id:'p5b', t:'5b. Sound to letter (from the writing sheet)', items:['/s/','/m/','/p/','/b/','/d/','/k/','/a/','/i/'], codes:[], note:true, after:true,
+   hint:'Mark after the hour. For /k/, c or k is correct. Write what the child wrote if wrong.'},
+  {id:'p6', special:true, t:'6. Teaching test'},
+  {id:'p7', t:'7. Kannada words', items:['ಅಮ್ಮ','ಮನೆ','ಹಸು','ಕಮಲ','ಪುಸ್ತಕ'], kn:true, codes:[], note:false,
+   hint:'One point for each word read correctly.'},
+  {id:'p8', special:true, t:'8. Delayed recall'},
+  {id:'cm', special:true, t:'Comments'}
+];
+const MARKS = [['c','✓','correct'],['x','✗','not correct'],['n','–','not asked'],['q','?','unsure']];
+const HOW = ['Settled quickly','Shy at first','Chatty, needed refocusing','Tired by the end','Upset at some point','Wanted to stop'];
+const PATTERNS = [['V','Adds a vowel to consonants (“buh”)'],['L','Gives letter names, not sounds'],['B','Says sounds but cannot blend'],['G','Guesses a word from the first letter'],['bd','Mixes b and d, or p and q'],['vw','Mixes v and w, or f and p'],['other','Other repeated mistake']];
+const WRONG = [['hint','Hint given by mistake (score that item as missed)'],['stop','Part stopped or skipped, and why'],['noise','Interruption, noise, another child could hear'],['behind','Ran behind the pace board: what was cut']];
+
+// ---------------- storage (per device) ----------------
+const KEY = 'ui-score-sheets-v1';
+let mem = {};
+function loadAll(){ try{ const s = localStorage.getItem(KEY); if(s) mem = JSON.parse(s)||{}; }catch(e){} return mem; }
+function persist(){ try{ localStorage.setItem(KEY, JSON.stringify(mem)); return true; }catch(e){ return false; } }
+function prefs(){ try{ return JSON.parse(localStorage.getItem(KEY+'-prefs')||'{}'); }catch(e){ return {}; } }
+function setPrefs(p){ try{ localStorage.setItem(KEY+'-prefs', JSON.stringify(p)); }catch(e){} }
+
+// ---------------- helpers ----------------
+const $ = s => document.querySelector(s);
+const app = $('#app');
+function h(tag, attrs, ...kids){
+  const el = document.createElement(tag);
+  if(attrs) for(const k in attrs){
+    const v = attrs[k];
+    if(k==='class') el.className = v;
+    else if(k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else if(k==='html') el.innerHTML = v;
+    else if(v!==false && v!=null) el.setAttribute(k, v===true?'':v);
+  }
+  for(const kid of kids.flat()){ if(kid==null||kid===false) continue; el.append(kid.nodeType?kid:document.createTextNode(kid)); }
+  return el;
+}
+function toast(msg, ms){ const t=$('#toast'); t.textContent=msg; t.classList.remove('hidden'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.add('hidden'), ms||2200); }
+function pad(n){ return String(n).padStart(2,'0'); }
+function today(){ const d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function nowTime(){ const d=new Date(); return pad(d.getHours())+':'+pad(d.getMinutes()); }
+function codeOf(s){ return s.center+'-'+pad(s.num||0); }
+function newSheet(center){
+  return {id:'s'+Date.now().toString(36)+Math.random().toString(36).slice(2,6), center, num:'', round:'1', date:today(), volunteer:prefs().volunteer||'', age:'', lang:'', level:'', start:'', end:'',
+    marks:{}, stopped:{}, skipped:{}, p6skip:false, p6why:'', pre:{}, probe:{}, engagement:'', tiredAt:'',
+    how:[], answeredIn:'', patterns:{}, hintHelp:'', hintNote:'', wrong:{}, other:'', submitted:false, updated:Date.now()};
+}
+function m(s, pid, i){ return (s.marks[pid+'-'+i]) || {m:'',codes:[],note:''}; }
+function setM(s, pid, i, patch){ const k=pid+'-'+i; s.marks[k] = Object.assign({m:'',codes:[],note:''}, s.marks[k]||{}, patch); }
+function partScore(s, p){ let c=0; p.items.forEach((_,i)=>{ if(m(s,p.id,i).m==='c') c++; }); return c; }
+function first8(s){ let c=0; for(let i=0;i<8;i++) if(m(s,'p2a',i).m==='c') c++; return c; }
+
+// Part 6 logic
+function missedAkshara(s, k){ const idx = AKSHARA.indexOf(ANCHOR[k]); if(idx<0) return false; const mm = m(s,'p1',idx).m; return mm==='x'; }
+function candState(s, k){
+  // auto skips: akshara missed in Part 1, or v/w rule
+  if(missedAkshara(s,k)) return {st:'skip', auto:'akshara missed'};
+  const other = k==='v'?'w':(k==='w'?'v':null);
+  if(other && s.pre[other]==='missed' && pickLetters(s,true).includes(other)) return {st:'skip', auto:'never both v and w'};
+  return {st: s.pre[k]||'', auto:''};
+}
+function pickLetters(s, raw){
+  const out=[];
+  for(const k of POOL){
+    if(out.length>=4) break;
+    if(missedAkshara(s,k)) continue;
+    if(s.pre[k]!=='missed') continue;
+    if((k==='w'&&out.includes('v'))||(k==='v'&&out.includes('w'))) continue;
+    out.push(k);
+  }
+  return raw ? out : out.slice().sort();
+}
+function conditions(s){
+  const letters = pickLetters(s);
+  if(letters.length<4) return [];
+  const odd = (parseInt(s.num,10)||0) % 2 === 1;
+  return letters.map((k,i)=>({k, cond: odd ? ((i===0||i===3)?'A':'D') : ((i===1||i===2)?'A':'D')}));
+}
+function probeTotals(s){
+  const t={immA:0,immD:0,delA:0,delD:0};
+  conditions(s).forEach(({k,cond})=>{ const p=s.probe[k]||{}; if(p.imm==='c') t['imm'+cond]++; if(p.del==='c') t['del'+cond]++; });
+  return t;
+}
+
+// ---------------- views ----------------
+let cur = null; // current sheet
+let dirty = false;
+
+function home(){
+  cur = null; dirty=false;
+  $('#bar').classList.add('hidden'); $('#nav').classList.add('hidden'); $('#homeBtn').classList.add('hidden');
+  $('#hsub').textContent = 'Reading assessment';
+  app.innerHTML='';
+  loadAll();
+  const pr = prefs();
+  let center = pr.center || '';
+  const start = h('div',{class:'card'},
+    h('h2',null,'New score sheet'),
+    h('p',{class:'hint'},'One sheet per child. Everything saves on this phone as you go. When you finish, “Finish & save to Drive” makes a file you send to the Google Drive folder.'),
+    h('label',{class:'f'},'Your center'),
+    (()=>{ const seg=h('div',{class:'seg'}); Object.entries(CENTERS).forEach(([p,c])=>{ seg.append(h('button',{type:'button',class:center===p?'on':'',onclick:()=>{center=p; setPrefs(Object.assign(prefs(),{center:p})); [...seg.children].forEach(b=>b.classList.toggle('on', b.dataset.p===p));},'data-p':p}, c.name)); }); return seg; })(),
+    h('label',{class:'f'},'Your name (volunteer)'),
+    (()=>{ const i=h('input',{type:'text',value:pr.volunteer||'',placeholder:'e.g. Asha',autocomplete:'name'}); i.addEventListener('change',()=>setPrefs(Object.assign(prefs(),{volunteer:i.value.trim()}))); return i; })(),
+    h('div',{class:'tools'}, h('button',{class:'btn',type:'button',onclick:()=>{ if(!center){toast('Pick your center first');return;} const s=newSheet(center); s.volunteer=prefs().volunteer||''; mem[s.id]=s; persist(); openSheet(s.id); }}, '+ Start a new sheet'))
+  );
+  app.append(start);
+
+  const sheets = Object.values(mem).sort((a,b)=>b.updated-a.updated);
+  const list = h('div',{class:'card list'}, h('h2',null,'Sheets on this phone'));
+  if(!sheets.length) list.append(h('p',{class:'hint'},'None yet.'));
+  sheets.forEach(s=>{
+    const c = CENTERS[s.center]||{name:s.center};
+    list.append(h('div',{class:'s'},
+      h('div',null, h('b',null, s.num?codeOf(s):c.name+' (no code yet)'), h('div',{class:'hint',style:'margin:2px 0 0'}, 'Round '+s.round+' · '+(s.date||'')+' · '+(s.volunteer||'no name'))),
+      h('div',{style:'display:flex;gap:6px;align-items:center'},
+        h('span',{class:'status '+(s.submitted?'done':'draft')}, s.submitted?'Saved to file':'Draft'),
+        h('button',{class:'btn small ghost',type:'button',onclick:()=>openSheet(s.id)},'Open'))
+    ));
+  });
+  app.append(list);
+
+  // leader tools
+  const lead = h('div',{class:'card'},
+    h('h2',null,'Leaders: combine sheets'),
+    h('p',{class:'hint'},'Download the score files from the Drive folder, pick them all here, and get one group tally (one row per child, with profiles).'),
+    (()=>{ const inp=h('input',{type:'file',accept:'.csv,text/csv',multiple:true}); inp.addEventListener('change',()=>combine(inp.files)); return inp; })(),
+    h('div',{id:'tallyOut'}),
+    h('details',{style:'margin-top:12px'}, h('summary',{class:'hint',style:'cursor:pointer'},'Delete sheets from this phone'),
+      h('p',{class:'hint'},'Only after the file is safely in Drive.'),
+      h('button',{class:'btn small danger',type:'button',onclick:()=>{ const done=Object.values(mem).filter(s=>s.submitted); if(!done.length){toast('No finished sheets to remove');return;} if(confirmInline(lead,'Remove '+done.length+' finished sheet(s) from this phone?',()=>{ done.forEach(s=>delete mem[s.id]); persist(); home(); })); }},'Remove finished sheets'))
+  );
+  app.append(lead);
+}
+
+function confirmInline(parent, msg, yes){
+  const box = h('div',{class:'warn'}, msg+' ', h('button',{class:'btn small danger',type:'button',onclick:()=>{box.remove(); yes();}},'Yes'), ' ', h('button',{class:'btn small ghost',type:'button',onclick:()=>box.remove()},'No'));
+  parent.append(box); return false;
+}
+
+function openSheet(id){
+  loadAll(); cur = mem[id]; if(!cur){ home(); return; }
+  dirty=false;
+  $('#homeBtn').classList.remove('hidden'); $('#bar').classList.remove('hidden'); $('#nav').classList.remove('hidden');
+  render();
+  window.scrollTo(0,0);
+}
+
+function touch(){ cur.updated=Date.now(); dirty=true; autosave(); }
+let saveT=null;
+function autosave(){ clearTimeout(saveT); saveT=setTimeout(()=>{ mem[cur.id]=cur; if(persist()) dirty=false; },400); }
+
+function render(){
+  const s = cur; const c = CENTERS[s.center]||{name:s.center,n:30};
+  $('#hsub').textContent = (s.num?codeOf(s):c.name) + ' · Round ' + s.round;
+  // nav
+  const nav=$('#nav'); nav.innerHTML='';
+  [['top','Header'],['p1','1'],['p2a','2a'],['p2b','2b'],['p3a','3a'],['p3b','3b'],['p4a','4a'],['p4b','4b'],['p5a','5a'],['p5b','5b'],['p6','6'],['p7','7'],['p8','8'],['cm','Notes']].forEach(([id,t])=>nav.append(h('a',{href:'#sec-'+id,onclick:(e)=>{e.preventDefault(); const el=document.getElementById('sec-'+id); if(el) window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'});}},t)));
+  app.innerHTML='';
+  app.append(headerCard(s,c), legendCard());
+  PARTS.forEach(p=>{
+    if(p.id==='p6') app.append(p6Card(s));
+    else if(p.id==='p8') app.append(p8Card(s));
+    else if(p.id==='cm') app.append(commentsCard(s));
+    else app.append(partCard(s,p));
+  });
+}
+
+function field(lbl, input){ return h('div',null, h('label',{class:'f'},lbl), input); }
+function bindText(s, key, attrs){ const i=h('input',Object.assign({type:'text',value:s[key]||''},attrs||{})); i.addEventListener('input',()=>{ s[key]=i.value; touch(); if(key==='num') $('#hsub').textContent=codeOf(s)+' · Round '+s.round; }); return i; }
+function segOf(s, key, opts, after){
+  const seg=h('div',{class:'seg'});
+  opts.forEach(([v,t])=>seg.append(h('button',{type:'button',class:s[key]===v?'on':'',onclick:()=>{ s[key]=(s[key]===v?'':v); touch(); [...seg.children].forEach((b,i)=>b.classList.toggle('on', s[key]===opts[i][0])); if(after) after(); }}, t)));
+  return seg;
+}
+
+function headerCard(s,c){
+  const numSel = h('select',null, h('option',{value:''},'Pick number'), ...Array.from({length:c.n},(_,i)=>h('option',{value:pad(i+1),selected:s.num===pad(i+1)}, s.center+'-'+pad(i+1))));
+  numSel.addEventListener('change',()=>{ s.num=numSel.value; touch(); $('#hsub').textContent=codeOf(s)+' · Round '+s.round; });
+  const tbtn=(key)=>{ const i=h('input',{type:'time',value:s[key]||''}); i.addEventListener('change',()=>{s[key]=i.value;touch();}); const b=h('button',{class:'btn small ghost',type:'button',onclick:()=>{ s[key]=nowTime(); i.value=s[key]; touch(); }},'Now'); return h('div',{class:'trow'}, i, b); };
+  const date=h('input',{type:'date',value:s.date||''}); date.addEventListener('change',()=>{s.date=date.value;touch();});
+  return h('div',{class:'card',id:'sec-top'},
+    h('h2',null,'Score sheet · '+c.name),
+    h('p',{class:'hint'},'Child code only, never the child’s name. The code comes from the leader’s code list.'),
+    h('div',{class:'row2'}, field('Child code', numSel), field('Round', segOf(s,'round',[['1','1'],['2','2'],['3','3']],()=>{ $('#hsub').textContent=(s.num?codeOf(s):c.name)+' · Round '+s.round; }))),
+    h('div',{class:'row2'}, field('Date', date), field('Volunteer', bindText(s,'volunteer'))),
+    h('div',{class:'row2'}, field('Age / class', bindText(s,'age')), field('Home language', bindText(s,'lang'))),
+    field('Current U&i level', segOf(s,'level',[['Letter','Letter'],['Word','Word'],['Sentence','Sentence'],['Story','Story']])),
+    h('div',{class:'row2'}, field('Start time', tbtn('start')), field('End time', tbtn('end')))
+  );
+}
+
+function legendCard(){
+  const sw=(cls,t,lbl)=>h('div',null,h('span',{class:'sw',style:'background:var(--'+cls+')'},t),lbl);
+  return h('div',{class:'card'},
+    h('h2',null,'The four marks'),
+    h('div',{class:'legend'}, sw('ok','✓','correct'), sw('bad','✗','not correct'), sw('na','–','not asked'), sw('q','?','unsure: a leader decides')),
+    h('p',{class:'hint',style:'margin-top:10px'},'Codes: V added vowel · S wrong sound · B sounds but no blend · G guessed word · L letter name · N no attempt. Tap a mark again to clear it.'));
+}
+
+function itemCard(s, p, i){
+  const label = p.labels ? p.labels(p.items[i]) : p.items[i];
+  const st = m(s,p.id,i);
+  const box = h('div',{class:'it '+(st.m||'')});
+  const lab = h('div',{class:'lab'}, h('span',{class:p.kn?'kn':''}, label), h('small',null, '#'+(i+1)));
+  const mk = h('div',{class:'mk'});
+  const extra = h('div');
+  function drawExtra(){
+    extra.innerHTML='';
+    const cur2 = m(s,p.id,i);
+    const showCodes = (cur2.m==='x'||cur2.m==='q') ? p.codes : (cur2.m==='c' && p.vtick ? ['V'] : []);
+    if(showCodes.length){
+      const cd=h('div',{class:'codes'});
+      showCodes.forEach(code=>cd.append(h('button',{type:'button',class:(cur2.codes||[]).includes(code)?'on':'',onclick:(e)=>{ const now=m(s,p.id,i); let cs=(now.codes||[]).slice(); cs=cs.includes(code)?cs.filter(x=>x!==code):cs.concat(code); setM(s,p.id,i,{codes:cs}); e.currentTarget.classList.toggle('on'); touch(); }}, code)));
+      extra.append(cd);
+    }
+    if((cur2.m==='x'||cur2.m==='q') && (p.note || cur2.m==='q')){
+      const n=h('input',{type:'text',class:'note',value:cur2.note||'',placeholder: cur2.m==='q'?'what you heard':(p.after?'what the child wrote':'what the child said')});
+      n.addEventListener('input',()=>{ setM(s,p.id,i,{note:n.value}); touch(); });
+      extra.append(n);
+    }
+  }
+  MARKS.forEach(([k,sym,name])=>{
+    mk.append(h('button',{type:'button','aria-label':name,class:k+(st.m===k?' on':''),onclick:()=>{
+      const now=m(s,p.id,i); const nv = now.m===k ? '' : k;
+      setM(s,p.id,i,{m:nv, codes: nv===now.m?now.codes:[]});
+      box.className='it '+(nv||''); [...mk.children].forEach((b,j)=>b.classList.toggle('on', MARKS[j][0]===nv));
+      drawExtra(); touch(); updateScore(p);
+    }}, sym));
+  });
+  drawExtra();
+  box.append(lab, mk, extra);
+  return box;
+}
+
+function updateScore(p){
+  const el=document.getElementById('score-'+p.id); if(!el) return;
+  el.textContent = scoreText(cur,p);
+  if(p.id==='p1') refreshP6();
+}
+function scoreText(s,p){
+  let t = partScore(s,p)+' / '+p.items.length;
+  if(p.first8) t += ' · first 8: '+first8(s)+'/8';
+  return t;
+}
+
+function partCard(s,p){
+  const items = h('div',{class:'items'+(p.wide?' wide':'')});
+  p.items.forEach((_,i)=>items.append(itemCard(s,p,i)));
+  const tools = h('div',{class:'tools'});
+  if(p.stop){
+    tools.append(h('button',{type:'button',class:'btn small ghost',onclick:()=>{
+      p.items.forEach((_,i)=>{ if(!m(s,p.id,i).m) setM(s,p.id,i,{m:'n'}); });
+      s.stopped[p.id]=true; touch(); rerenderPart(p);
+    }}, 'Stopped here: mark the rest “not asked”'));
+  }
+  if(p.skippable){
+    tools.append(h('button',{type:'button',class:'btn small ghost',onclick:()=>{
+      s.skipped[p.id]=!s.skipped[p.id];
+      if(s.skipped[p.id]) p.items.forEach((_,i)=>setM(s,p.id,i,{m:'n'}));
+      touch(); rerenderPart(p);
+    }}, s.skipped[p.id]?'Undo skip':'Skip this part (2a under 3)'));
+  }
+  const flags = h('div',{style:'display:flex;gap:6px;margin-top:6px'});
+  if(s.stopped[p.id]) flags.append(h('span',{class:'flag on'},'Stopped'), h('button',{type:'button',class:'btn small ghost',onclick:()=>{ s.stopped[p.id]=false; touch(); rerenderPart(p); }},'Undo stopped'));
+  if(s.skipped[p.id]) flags.append(h('span',{class:'flag on'},'Skipped'));
+  return h('div',{class:'card',id:'sec-'+p.id},
+    h('div',{class:'parthead'}, h('div',null,h('h2',null,p.t), h('p',{class:'hint'},p.hint)), h('div',{class:'score',id:'score-'+p.id}, scoreText(s,p))),
+    flags, items, tools);
+}
+function rerenderPart(p){
+  const old=document.getElementById('sec-'+p.id); if(!old) return;
+  old.replaceWith(partCard(cur,p));
+  if(p.id==='p1') refreshP6();
+}
+
+// ---------------- Part 6 ----------------
+function refreshP6(){ const old=document.getElementById('sec-p6'); if(old) old.replaceWith(p6Card(cur)); const o8=document.getElementById('sec-p8'); if(o8) o8.replaceWith(p8Card(cur)); }
+
+function p6Card(s){
+  const card = h('div',{class:'card',id:'sec-p6'});
+  card.append(h('div',{class:'parthead'}, h('div',null, h('h2',null,'6. Teaching test'),
+    h('p',{class:'hint'},'Pre-test: show each letter alone, in this order. Tap once if the child said the sound (✓ known), twice if missed (✗), three times to skip. Stop when 4 are missed. Letters whose akshara was missed in Part 1 are skipped for you.'))));
+  const skipRow = h('div',{class:'tools'},
+    h('button',{type:'button',class:'btn small '+(s.p6skip?'':'ghost'),onclick:()=>{ s.p6skip=!s.p6skip; touch(); refreshP6(); }}, s.p6skip?'Part 6 skipped (tap to undo)':'Skip Part 6'));
+  card.append(skipRow);
+  if(s.p6skip){
+    const why=h('input',{type:'text',value:s.p6why||'',placeholder:'Why? (e.g. fewer than 4 unknown letters, out of time)'});
+    why.addEventListener('input',()=>{s.p6why=why.value;touch();});
+    card.append(h('label',{class:'f'},'Why skipped'), why);
+    return card;
+  }
+  const cands = h('div',{class:'cands'});
+  const picked = pickLetters(s,true);
+  POOL.forEach(k=>{
+    const cs = candState(s,k);
+    const isAuto = !!cs.auto;
+    const label = cs.st==='known'?'✓ known':cs.st==='missed'?'✗ missed':cs.st==='skip'?(cs.auto||'skipped'):'not shown';
+    cands.append(h('button',{type:'button',class:'cand '+(cs.st||'')+(isAuto?' auto':''),disabled:isAuto && cs.auto==='akshara missed' ? true : false,onclick:()=>{
+      if(cs.auto==='akshara missed') return;
+      const order=['','known','missed','skip']; const curv=s.pre[k]||''; let nx=order[(order.indexOf(curv)+1)%order.length];
+      if(nx==='missed' && picked.length>=4 && !picked.includes(k)) { toast('You already have 4 missed letters'); nx='skip'; }
+      s.pre[k]=nx; touch(); refreshP6();
+    }}, h('b',null,k), h('span',null,label)));
+  });
+  card.append(cands);
+  const conds = conditions(s);
+  const odd = (parseInt(s.num,10)||0)%2===1;
+  if(!s.num) card.append(h('div',{class:'warn'},'Pick the child code in the header first: odd or even decides which letters get the hint.'));
+  if(conds.length<4){
+    card.append(h('div',{class:'warn'}, 'Missed so far: '+(picked.length?picked.join(', '):'none')+'. Keep going down the list until 4 letters are missed. If the list runs out, skip Part 6 and write why.'));
+    return card;
+  }
+  card.append(h('p',{class:'hint',style:'margin-top:12px'}, 'Sorted: '+conds.map(c=>c.k).join(', ')+'. '+(odd?'Odd code: hint on letters 1 and 4.':'Even code: hint on letters 2 and 3.')+' Teach each for about 2 minutes, equal effort. Then the immediate test (shuffle, English side only).'));
+  const tb = h('table',{class:'pr'}, h('tr',null, h('th',null,'Letter'), h('th',null,'Teach'), h('th',null,'Immediate'), h('th',null,'Child said')));
+  conds.forEach(({k,cond})=>{
+    const p = s.probe[k] = s.probe[k] || {imm:'',del:'',said:''};
+    const said=h('input',{type:'text',class:'note',value:p.said||'',placeholder:'if wrong',style:'margin:0'});
+    said.addEventListener('input',()=>{p.said=said.value;touch();});
+    tb.append(h('tr',null,
+      h('td',null, h('b',{style:'font-size:20px'},k), h('div',{class:'hint',style:'margin:0'},KEYWORD[k])),
+      h('td',null, h('span',{class:'tg '+cond}, cond==='A'?'A · hint':'D · direct'), cond==='A'?h('div',{class:'kn',style:'font-size:20px;margin-top:4px'},ANCHOR[k]+'್'):''),
+      h('td',null, yn(p,'imm')),
+      h('td',null, said)));
+  });
+  card.append(tb);
+  const t = probeTotals(s);
+  card.append(h('p',{class:'hint',style:'margin-top:8px',id:'p6tot'}, 'Immediate: A '+t.immA+'/2 · D '+t.immD+'/2'));
+  return card;
+}
+function yn(p, key){
+  const w=h('div',{class:'yn'});
+  [['c','✓'],['x','✗']].forEach(([v,t])=>w.append(h('button',{type:'button',class:v+(p[key]===v?' on':''),onclick:()=>{ p[key]=p[key]===v?'':v; touch(); [...w.children].forEach((b,i)=>b.classList.toggle('on', p[key]===['c','x'][i])); const t=probeTotals(cur); const e1=document.getElementById('p6tot'); if(e1) e1.textContent='Immediate: A '+t.immA+'/2 · D '+t.immD+'/2'; const e2=document.getElementById('p8tot'); if(e2) e2.textContent='Delayed: A '+t.delA+'/2 · D '+t.delD+'/2'; }}, t)));
+  return w;
+}
+function p8Card(s){
+  const card=h('div',{class:'card',id:'sec-p8'}, h('h2',null,'8. Delayed recall'), h('p',{class:'hint'},'After Part 7. Shuffle the 4 cards, English side only: “What sound does this letter make?” No teaching, no hints. Never skip this part.'));
+  const conds=conditions(s);
+  if(s.p6skip || conds.length<4){ card.append(h('p',{class:'hint'}, s.p6skip?'Part 6 was skipped, so there is nothing to recall.':'Finish the Part 6 pre-test first.')); return card; }
+  const tb=h('table',{class:'pr'}, h('tr',null,h('th',null,'Letter'),h('th',null,'Group'),h('th',null,'Delayed'),h('th',null,'Child said')));
+  conds.forEach(({k,cond})=>{
+    const p=s.probe[k]=s.probe[k]||{imm:'',del:'',said:''};
+    const said=h('input',{type:'text',class:'note',value:p.dsaid||'',placeholder:'if wrong',style:'margin:0'});
+    said.addEventListener('input',()=>{p.dsaid=said.value;touch();});
+    tb.append(h('tr',null,h('td',null,h('b',{style:'font-size:20px'},k)),h('td',null,h('span',{class:'tg '+cond},cond)),h('td',null,yn(p,'del')),h('td',null,said)));
+  });
+  const t=probeTotals(s);
+  card.append(tb, h('p',{class:'hint',style:'margin-top:8px',id:'p8tot'},'Delayed: A '+t.delA+'/2 · D '+t.delD+'/2'));
+  return card;
+}
+
+// ---------------- comments ----------------
+function commentsCard(s){
+  const card=h('div',{class:'card',id:'sec-cm'}, h('h2',null,'Comments'), h('p',{class:'hint'},'What you saw and heard, not guesses about the child. No names.'));
+  card.append(h('label',{class:'f'},'Engagement'), segOf(s,'engagement',[['Focused','Focused'],['Mixed','Mixed'],['Struggled','Struggled to stay on task']]));
+  card.append(h('label',{class:'f'},'Tired or upset at (time)'), bindText(s,'tiredAt',{placeholder:'e.g. 0:45, or no'}));
+  const how=h('div',{class:'checks'});
+  HOW.forEach(x=>{ const cb=h('input',{type:'checkbox',checked:s.how.includes(x)}); cb.addEventListener('change',()=>{ s.how = cb.checked? s.how.concat(x) : s.how.filter(y=>y!==x); touch(); }); how.append(h('label',null,cb,x)); });
+  card.append(h('label',{class:'f'},'How the child was'), how);
+  card.append(h('label',{class:'f'},'Answered mostly in'), segOf(s,'answeredIn',[['Kannada','Kannada'],['English','English'],['Mixed','Mixed'],['Other','Other']]));
+  card.append(h('label',{class:'f'},'Patterns you heard (add an example or how often)'));
+  PATTERNS.forEach(([k,t])=>{
+    const p = s.patterns[k] = s.patterns[k] || {on:false,ex:''};
+    const ex=h('input',{type:'text',class:'note',value:p.ex||'',placeholder:'example or how often',style:'margin:6px 0 0'+(p.on?'':';display:none')});
+    ex.addEventListener('input',()=>{p.ex=ex.value;touch();});
+    const cb=h('input',{type:'checkbox',checked:p.on}); cb.addEventListener('change',()=>{ p.on=cb.checked; ex.style.display=p.on?'':'none'; touch(); });
+    card.append(h('div',{class:'checks',style:'grid-template-columns:1fr;margin-bottom:6px'}, h('label',{style:'flex-wrap:wrap'},cb,t)), ex);
+  });
+  card.append(h('label',{class:'f'},'Part 6: did the Kannada hint seem to help?'), segOf(s,'hintHelp',[['Yes clearly','Yes, clearly'],['A little','A little'],['No difference','No difference'],['Confused','Confused the child'],['Skipped','Part 6 skipped']]));
+  card.append(bindText(s,'hintNote',{placeholder:'optional note',style:'margin-top:8px'}));
+  card.append(h('label',{class:'f'},'Anything that went wrong'));
+  WRONG.forEach(([k,t])=>{ const i=h('input',{type:'text',value:s.wrong[k]||'',placeholder:'item or part, and what happened'}); i.addEventListener('input',()=>{s.wrong[k]=i.value;touch();}); card.append(h('div',{class:'hint',style:'margin:8px 0 4px;font-weight:700'},t), i); });
+  const ta=h('textarea',{placeholder:'Other comments'}); ta.value=s.other||''; ta.addEventListener('input',()=>{s.other=ta.value;touch();});
+  card.append(h('label',{class:'f'},'Other comments'), ta);
+  return card;
+}
+
+// ---------------- checks & export ----------------
+function problems(s){
+  const out=[];
+  if(!s.num) out.push('Child code is missing.');
+  if(!s.volunteer) out.push('Volunteer name is missing.');
+  if(!s.date) out.push('Date is missing.');
+  PARTS.filter(p=>p.items).forEach(p=>{
+    const blank = p.items.map((_,i)=>m(s,p.id,i).m).filter(x=>!x).length;
+    if(blank) out.push(p.t+': '+blank+' item(s) not marked'+(p.stop?' (use “Stopped here” if you stopped)':'')+'.');
+    const xNoNote = p.note ? p.items.filter((_,i)=>{const mm=m(s,p.id,i); return (mm.m==='x') && !(mm.codes||[]).length && !mm.note;}).length : 0;
+    if(xNoNote) out.push(p.t+': '+xNoNote+' ✗ without a code or note.');
+    const qNoNote = p.items.filter((_,i)=>{const mm=m(s,p.id,i); return mm.m==='q' && !mm.note;}).length;
+    if(qNoNote) out.push(p.t+': '+qNoNote+' ? without what you heard.');
+  });
+  if(!s.p6skip){
+    const c=conditions(s);
+    if(c.length<4) out.push('Part 6: fewer than 4 letters picked. Finish the pre-test or skip Part 6 with a reason.');
+    else c.forEach(({k})=>{ const p=s.probe[k]||{}; if(!p.imm) out.push('Part 6: immediate result missing for '+k+'.'); if(!p.del) out.push('Part 8: delayed result missing for '+k+'.'); });
+  } else if(!s.p6why) out.push('Part 6 skipped: write why.');
+  if(!s.engagement) out.push('Engagement is not ticked.');
+  return out;
+}
+
+function csvCell(v){ v = v==null?'':String(v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+function buildCSV(s){
+  const code=codeOf(s), base=[s.center, code, s.round, s.date, s.volunteer];
+  const rows=[['center','code','round','date','volunteer','section','item','mark','codes','note']];
+  const add=(sec,item,mark,codes,note)=>rows.push(base.concat([sec,item,mark,codes||'',note||'']));
+  const MN={c:'correct',x:'not correct',n:'not asked',q:'unsure','':'blank'};
+  [['age',s.age],['home language',s.lang],['U&i level',s.level],['start',s.start],['end',s.end]].forEach(([k,v])=>add('header',k,'','',v));
+  PARTS.filter(p=>p.items).forEach(p=>{
+    p.items.forEach((it,i)=>{ const mm=m(s,p.id,i); add(p.id, p.labels?p.labels(it):it, MN[mm.m||''], (mm.codes||[]).join(' '), mm.note); });
+    add(p.id,'TOTAL',partScore(s,p),'', (s.stopped[p.id]?'stopped':'')+(s.skipped[p.id]?'skipped':''));
+    if(p.first8) add(p.id,'FIRST8',first8(s),'','');
+  });
+  if(s.p6skip) add('p6','SKIPPED','yes','',s.p6why);
+  else {
+    add('p6','PRETEST','','', POOL.map(k=>{const cs=candState(s,k); return cs.st?k+':'+(cs.auto?'skip('+cs.auto+')':cs.st):null;}).filter(Boolean).join('; '));
+    conditions(s).forEach(({k,cond})=>{ const p=s.probe[k]||{}; add('p6',k,MN[p.imm||''],cond,p.said); add('p8',k,MN[p.del||''],cond,p.dsaid); });
+  }
+  const t=probeTotals(s);
+  add('p6','IMMEDIATE_A',t.immA); add('p6','IMMEDIATE_D',t.immD); add('p8','DELAYED_A',t.delA); add('p8','DELAYED_D',t.delD);
+  add('comments','engagement','','',s.engagement); add('comments','tired or upset at','','',s.tiredAt);
+  add('comments','how the child was','','',s.how.join('; ')); add('comments','answered mostly in','','',s.answeredIn);
+  PATTERNS.forEach(([k,tt])=>{ const p=s.patterns[k]; if(p&&p.on) add('comments','pattern: '+tt,'seen','',p.ex); });
+  add('comments','did the Kannada hint help','','',s.hintHelp+(s.hintNote?' · '+s.hintNote:''));
+  WRONG.forEach(([k,tt])=>{ if(s.wrong[k]) add('comments',tt,'','',s.wrong[k]); });
+  add('comments','other','','',s.other);
+  return '﻿'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
+}
+
+async function saveFile(filename, text){
+  const blob = new Blob([text],{type:'text/csv'});
+  // 1) phone share sheet (pick Google Drive)
+  try{
+    if(navigator.canShare){
+      const file = new File([blob], filename, {type:'text/csv'});
+      if(navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:filename}); return 'shared'; }
+    }
+  }catch(e){ if(e && e.name==='AbortError') return 'cancelled'; }
+  // 2) inside Claude: the downloads capability
+  try{
+    if(window.claude && typeof window.claude.use==='function'){
+      const dl = await window.claude.use('downloads');
+      if(dl){ await dl.save({filename, data: blob}); return 'saved'; }
+    }
+  }catch(e){ if(e && e.code==='declined') return 'cancelled'; }
+  // 3) plain download
+  try{
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; document.body.append(a); a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},2000); return 'saved';
+  }catch(e){ return 'failed'; }
+}
+
+async function finish(){
+  const s=cur; mem[s.id]=s; persist();
+  const probs=problems(s);
+  const box=$('#finishBox'); if(box) box.remove();
+  const panel=h('div',{class:'card',id:'finishBox'});
+  if(probs.length){
+    panel.append(h('h2',null,'Before you save'), h('div',{class:'err'}, h('ul',{style:'margin:0;padding-left:18px'}, ...probs.map(p=>h('li',null,p)))),
+      h('p',{class:'hint',style:'margin-top:10px'},'Fix these if you can. If something truly could not be done, write why in the comments, then save anyway.'),
+      h('div',{class:'tools'}, h('button',{class:'btn',type:'button',onclick:()=>doSave(s)},'Save anyway')));
+  } else {
+    panel.append(h('h2',null,'All parts are filled'), h('p',{class:'hint'},'Next: choose Google Drive in the share menu and save into the assessment folder. If Drive does not appear, the file downloads; upload it to the folder from the Drive app.'),
+      h('div',{class:'tools'}, h('button',{class:'btn',type:'button',onclick:()=>doSave(s)},'Save file to Drive')));
+  }
+  app.append(panel);
+  panel.scrollIntoView({behavior:'smooth'});
+}
+async function doSave(s){
+  const name = codeOf(s)+'_round'+s.round+'_'+(s.date||today())+'.csv';
+  const r = await saveFile(name, buildCSV(s));
+  if(r==='shared'||r==='saved'){ s.submitted=true; s.updated=Date.now(); mem[s.id]=s; persist(); toast(r==='shared'?'Sent. Check it landed in the Drive folder.':'File saved: upload it to the Drive folder.',3500); }
+  if((r==='shared'||r==='saved') && DRIVE_FOLDER_URL){ const fb=$('#finishBox'); if(fb && !fb.querySelector('.drive')) fb.append(h('div',{class:'tools drive'}, h('a',{class:'btn ghost',href:DRIVE_FOLDER_URL,target:'_blank',rel:'noopener',style:'text-decoration:none;text-align:center'},'Open the Drive folder'))); }
+  else if(r==='cancelled') toast('Not saved. Tap again when ready.');
+  else toast('Could not save here. Tell a leader.');
+}
+
+// ---------------- leaders: combine ----------------
+function parseCSV(text){
+  text=text.replace(/^﻿/,''); const rows=[]; let row=[],f='',q=false;
+  for(let i=0;i<text.length;i++){ const ch=text[i];
+    if(q){ if(ch==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=ch; }
+    else if(ch==='"') q=true; else if(ch===','){row.push(f);f='';} else if(ch==='\n'){row.push(f);rows.push(row);row=[];f='';} else if(ch!=='\r') f+=ch; }
+  if(f||row.length){row.push(f);rows.push(row);} return rows;
+}
+async function combine(files){
+  const out=$('#tallyOut'); out.innerHTML='';
+  const kids={};
+  for(const file of files){
+    const rows=parseCSV(await file.text()); const head=rows.shift()||[];
+    if(head[1]!=='code'){ out.append(h('div',{class:'err'},file.name+' is not a score file.')); continue; }
+    rows.forEach(r=>{ if(r.length<9) return; const key=r[1]+'|'+r[2]; const k=kids[key]=kids[key]||{code:r[1],round:r[2],center:r[0],v:{}};
+      if(r[5]==='header') k.v[r[6]]=r[9];
+      if(['TOTAL','FIRST8','IMMEDIATE_A','IMMEDIATE_D','DELAYED_A','DELAYED_D'].includes(r[6])) k.v[r[5]+'.'+r[6]]=r[7]; });
+  }
+  const list=Object.values(kids).sort((a,b)=>a.code.localeCompare(b.code));
+  if(!list.length) return;
+  const num=(k,x)=>{const v=parseInt(k.v[x],10); return isNaN(v)?null:v;};
+  const profile=k=>{ const s2=num(k,'p2a.TOTAL'), bl=num(k,'p3a.TOTAL'), w=num(k,'p4a.TOTAL'); if(s2==null) return ''; if(s2<4) return 'A'; if(bl!=null&&bl<6) return 'B'; if(w!=null&&w<5) return 'C'; return 'D'; };
+  const better=k=>{ const a=num(k,'p8.DELAYED_A'), d=num(k,'p8.DELAYED_D'); if(a==null||d==null||(a===0&&d===0&&!k.v['p6.IMMEDIATE_A'])) return ''; return a>d?'hint better':(d>a?'direct better':'same'); };
+  const cols=[['Code',k=>k.code],['Round',k=>k.round],['U&i level',k=>k.v['U&i level']||''],['Akshara /25',k=>k.v['p1.TOTAL']],['Sounds 2a /10',k=>k.v['p2a.TOTAL']],['2a first 8',k=>k.v['p2a.FIRST8']],['Bridge 2b /8',k=>k.v['p2b.TOTAL']],['Blend /8',k=>k.v['p3a.TOTAL']],['Split /8',k=>k.v['p3b.TOTAL']],['Words /10',k=>k.v['p4a.TOTAL']],['Made-up /10',k=>k.v['p4b.TOTAL']],['Spell /10',k=>k.v['p5a.TOTAL']],['Sound to letter /8',k=>k.v['p5b.TOTAL']],['Kannada /5',k=>k.v['p7.TOTAL']],['Now A',k=>k.v['p6.IMMEDIATE_A']],['Now D',k=>k.v['p6.IMMEDIATE_D']],['Later A',k=>k.v['p8.DELAYED_A']],['Later D',k=>k.v['p8.DELAYED_D']],['Hint vs direct',better],['Profile',profile]];
+  const tb=h('table',null, h('tr',null,...cols.map(c=>h('th',null,c[0]))), ...list.map(k=>h('tr',null,...cols.map(c=>h('td',null,String(c[1](k)??''))))));
+  out.append(h('p',{class:'hint',style:'margin-top:10px'}, list.length+' sheet(s). Profiles and “hint vs direct” follow the rules in Reading the Data; check them against the sheets.'), h('div',{class:'tally'},tb));
+  const csv='﻿'+[cols.map(c=>c[0])].concat(list.map(k=>cols.map(c=>c[1](k)??''))).map(r=>r.map(csvCell).join(',')).join('\r\n');
+  out.append(h('div',{class:'tools'}, h('button',{class:'btn',type:'button',onclick:async()=>{ const r=await saveFile('group-tally_'+today()+'.csv', csv); toast(r==='cancelled'?'Not saved':'Tally saved'); }},'Save group tally')));
+}
+
+// ---------------- wiring ----------------
+$('#homeBtn').addEventListener('click',()=>{ if(cur){ mem[cur.id]=cur; persist(); } home(); });
+$('#saveDraft').addEventListener('click',()=>{ mem[cur.id]=cur; toast(persist()?'Saved on this phone':'Could not save on this phone. Keep this page open and tell a leader.'); });
+$('#finish').addEventListener('click',finish);
+window.addEventListener('beforeunload',()=>{ if(cur){ mem[cur.id]=cur; persist(); } });
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden' && cur){ mem[cur.id]=cur; persist(); } });
+home();
+})();
+</script>
+</body>
+</html>
